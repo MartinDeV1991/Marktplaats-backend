@@ -2,11 +2,14 @@ package com.devteam.marktplaats.api;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.devteam.marktplaats.dto.ProductDTO;
+import com.devteam.marktplaats.dto.UserDTO;
 import com.devteam.marktplaats.model.User;
 import com.devteam.marktplaats.service.UserService;
 
@@ -18,18 +21,19 @@ public class UserController {
     private UserService userService;
 
     @GetMapping
-    public List<User> findAllUsers() {
-        return userService.getAllUsers();
+    public List<UserDTO> findAllUsers() {
+        return userService.getAllUsers()
+        		.stream()
+				.map(UserDTO::new)
+				.collect(Collectors.toList());
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<User> findById(@PathVariable long id) {
-        Optional<User> optionalUser = userService.findById(id);
-        if (optionalUser.isPresent()) {
-            return ResponseEntity.ok(optionalUser.get());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<UserDTO> findById(@PathVariable long id) {
+    	return userService.findById(id)
+				.map(UserDTO::new)
+				.map(ResponseEntity::ok)
+				.orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping

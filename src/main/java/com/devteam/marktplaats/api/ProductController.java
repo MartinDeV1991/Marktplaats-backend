@@ -28,17 +28,36 @@ public class ProductController {
 
 	@GetMapping
 	public List<ProductDTO> findAllProducts() {
-		return productService.getAllProducts().stream()
-				.map(ProductDTO::new).collect(Collectors.toList());
+		return productService.getAllProducts()
+				.stream()
+				.map(ProductDTO::new)
+				.collect(Collectors.toList());
 	}
 
 	@GetMapping("{id}")
 	public ResponseEntity<ProductDTO> findById(@PathVariable long id) {
-		return productService.findById(id).map(ProductDTO::new)
+		return productService.findById(id)
+				.map(ProductDTO::new)
 				.map(ResponseEntity::ok)
 				.orElse(ResponseEntity.notFound().build());
 	}
-
+	
+	@GetMapping("by_user/{id}")
+	public ResponseEntity<List<ProductDTO>> findByUser(@PathVariable long id) {
+		List<ProductDTO> productDTOList = productService.findByUser(id)
+				.stream().map(ProductDTO::new)
+				.collect(Collectors.toList());
+		return ResponseEntity.ok(productDTOList);
+	}
+	@GetMapping("by_order/{id}")
+	public ResponseEntity<List<ProductDTO>> findByOrder(@PathVariable long id) {
+		List<ProductDTO> productDTOList = productService.findByOrder(id)
+				.stream().map(ProductDTO::new)
+				.collect(Collectors.toList());
+		return ResponseEntity.ok(productDTOList);
+	}
+	
+	
 	@PostMapping
 	public Product create(@RequestBody Product product) {
 		return this.productService.createOrUpdate(product);

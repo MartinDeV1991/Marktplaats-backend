@@ -2,11 +2,14 @@ package com.devteam.marktplaats.api;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.devteam.marktplaats.dto.ProductDTO;
+import com.devteam.marktplaats.dto.ShoppingCartDTO;
 import com.devteam.marktplaats.model.ShoppingCart;
 import com.devteam.marktplaats.service.ShoppingCartService;
 
@@ -18,18 +21,19 @@ public class ShoppingCartController {
     private ShoppingCartService shoppingCartService;
 
     @GetMapping
-    public List<ShoppingCart> findAllShoppingCarts() {
-        return shoppingCartService.getAllShoppingCarts();
+    public List<ShoppingCartDTO> findAllShoppingCarts() {
+        return shoppingCartService.getAllShoppingCarts()
+        		.stream()
+				.map(ShoppingCartDTO::new)
+				.collect(Collectors.toList());
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<ShoppingCart> findById(@PathVariable long id) {
-        Optional<ShoppingCart> optionalShoppingCart = shoppingCartService.findById(id);
-        if (optionalShoppingCart.isPresent()) {
-            return ResponseEntity.ok(optionalShoppingCart.get());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<ShoppingCartDTO> findById(@PathVariable long id) {
+    	return shoppingCartService.findById(id)
+				.map(ShoppingCartDTO::new)
+				.map(ResponseEntity::ok)
+				.orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping

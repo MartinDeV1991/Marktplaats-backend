@@ -6,6 +6,7 @@ import java.time.LocalDate;
 
 public class OrderDTO {
 
+	private long id;
     private double totalPayment;
     private String deliveryAddress;
     private LocalDate deliveryDate;
@@ -14,6 +15,7 @@ public class OrderDTO {
     private String status;
 
     public OrderDTO(Order order) {
+    	this.id = order.getId();
         this.totalPayment = order.getTotalPayment();
         this.deliveryAddress = order.getDeliveryAddress();
         this.deliveryDate = order.getDeliveryDate();
@@ -22,7 +24,12 @@ public class OrderDTO {
         this.status = order.getStatus();
     }
 
-    public double getTotalPayment() {
+    
+    public long getId() {
+		return id;
+	}
+
+	public double getTotalPayment() {
         return totalPayment;
     }
 

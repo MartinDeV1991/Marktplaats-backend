@@ -4,6 +4,7 @@ import com.devteam.marktplaats.model.Product;
 
 public class ProductDTO {
 
+	private long id;
     private String productType;
     private String productName;
     private String productDescription;
@@ -13,6 +14,7 @@ public class ProductDTO {
     private String foto;
 
     public ProductDTO(Product product) {
+    	this.id = product.getId();
         this.productType = product.getProductType();
         this.productName = product.getProductName();
         this.productDescription = product.getProductDescription();
@@ -21,6 +23,10 @@ public class ProductDTO {
         this.size = product.getSize();    
     }
 
+    public long getId() {
+		return id;
+	}
+    
 	public String getProductType() {
 		return productType;
 	}

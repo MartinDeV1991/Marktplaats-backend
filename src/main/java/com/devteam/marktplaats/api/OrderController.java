@@ -2,11 +2,14 @@ package com.devteam.marktplaats.api;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.devteam.marktplaats.dto.OrderDTO;
+import com.devteam.marktplaats.dto.ProductDTO;
 import com.devteam.marktplaats.model.Order;
 import com.devteam.marktplaats.service.OrderService;
 
@@ -18,18 +21,19 @@ public class OrderController {
     private OrderService orderService;
 
     @GetMapping
-    public List<Order> findAllOrders() {
-        return orderService.getAllOrders();
+    public List<OrderDTO> findAllOrders() {
+        return orderService.getAllOrders()
+        		.stream()
+				.map(OrderDTO::new)
+				.collect(Collectors.toList());
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Order> findById(@PathVariable long id) {
-        Optional<Order> optionalOrder = orderService.findById(id);
-        if (optionalOrder.isPresent()) {
-            return ResponseEntity.ok(optionalOrder.get());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<OrderDTO> findById(@PathVariable long id) {
+    	return orderService.findById(id)
+				.map(OrderDTO::new)
+				.map(ResponseEntity::ok)
+				.orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
