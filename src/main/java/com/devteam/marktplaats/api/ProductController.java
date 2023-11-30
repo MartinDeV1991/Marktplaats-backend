@@ -1,12 +1,15 @@
 package com.devteam.marktplaats.api;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,15 +25,19 @@ public class ProductController {
 	@Autowired
 	private ProductService productService;
 	
-//	@GetMapping
-//	public String findAllProducts() {
-//		String text = "Hello world!";
-//	    return text;
-//	}
-	
 	@GetMapping
 	public List<Product> findAllProducts() {
 		return productService.getAllProducts();
+	}
+	
+	@GetMapping("{id}")
+	public ResponseEntity<Product> findById(@PathVariable long id) {
+		Optional<Product> optionalProduct = productService.findById(id);
+		if (optionalProduct.isPresent()) {
+			return ResponseEntity.ok(optionalProduct.get());
+		} else {
+			return ResponseEntity.notFound().build();
+		}
 	}
 	
 	@PostMapping
@@ -43,4 +50,22 @@ public class ProductController {
 		this.productService.deleteById(id);
 	}
 	
+	@PutMapping("{id}")
+	public ResponseEntity<Product> updateById(@PathVariable long id, @RequestBody Product input) {
+		Optional<Product> optionalTarget = this.productService.findById(id);
+		
+		if (optionalTarget.isEmpty()) {
+			return null;
+		}
+		
+		Product target = optionalTarget.get();
+		target.setProductType(input.getProductType());
+		target.setProductName(input.getProductName());
+		target.setPrice(input.getPrice());
+		target.setWeight(input.getWeight());
+		
+		Product updated = this.productService.createOrUpdate(target);
+		return ResponseEntity.ok(updated);
+				
+	}
 }

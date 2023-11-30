@@ -1,6 +1,7 @@
 package com.devteam.marktplaats.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,10 @@ public class ProductService {
 		return productRepository.findAll();
 	}
 
+	public Optional<Product> findById(long id) {
+		return this.productRepository.findById(id); 
+	}
+	
 	public Product createOrUpdate(Product product) {
 		return this.productRepository.save(product);
 	}
