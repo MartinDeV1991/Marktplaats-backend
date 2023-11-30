@@ -61,8 +61,10 @@ public class ProductController {
 		Product target = optionalTarget.get();
 		target.setProductType(input.getProductType());
 		target.setProductName(input.getProductName());
+		target.setProductDescription(input.getProductDescription());
 		target.setPrice(input.getPrice());
 		target.setWeight(input.getWeight());
+		target.setSize(input.getSize());
 		
 		Product updated = this.productService.createOrUpdate(target);
 		return ResponseEntity.ok(updated);

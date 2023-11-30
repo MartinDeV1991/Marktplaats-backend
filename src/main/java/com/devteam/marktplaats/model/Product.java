@@ -15,9 +15,10 @@ public class Product {
 	public long id;
 	public String productType;
 	public String productName;
-	public String productBeschrijving;
+	public String productDescription;
 	public double price;
 	public double weight;
+	public String size;
 	
 	
 	public long getId() {
@@ -38,12 +39,15 @@ public class Product {
 	public void setProductName(String productName) {
 		this.productName = productName;
 	}
-	public String getProductBeschrijving() {
-		return productBeschrijving;
+
+	public String getProductDescription() {
+		return productDescription;
 	}
-	public void setProductBeschrijving(String productBeschrijving) {
-		this.productBeschrijving = productBeschrijving;
+	
+	public void setProductDescription(String productDescription) {
+		this.productDescription = productDescription;
 	}
+	
 	public double getPrice() {
 		return price;
 	}
@@ -56,6 +60,11 @@ public class Product {
 	public void setWeight(double weight) {
 		this.weight = weight;
 	}
-	
+	public String getSize() {
+		return size;
+	}
+	public void setSize(String size) {
+		this.size = size;
+	}
 	
 }
