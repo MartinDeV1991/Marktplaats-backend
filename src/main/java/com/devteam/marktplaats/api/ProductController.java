@@ -2,6 +2,7 @@ package com.devteam.marktplaats.api;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,50 +15,48 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.devteam.marktplaats.dto.ProductDTO;
 import com.devteam.marktplaats.model.Product;
 import com.devteam.marktplaats.service.ProductService;
-
 
 @RestController
 @RequestMapping("api/product")
 public class ProductController {
-	
+
 	@Autowired
 	private ProductService productService;
-	
+
 	@GetMapping
-	public List<Product> findAllProducts() {
-		return productService.getAllProducts();
+	public List<ProductDTO> findAllProducts() {
+		return productService.getAllProducts().stream()
+				.map(ProductDTO::new).collect(Collectors.toList());
 	}
-	
+
 	@GetMapping("{id}")
-	public ResponseEntity<Product> findById(@PathVariable long id) {
-		Optional<Product> optionalProduct = productService.findById(id);
-		if (optionalProduct.isPresent()) {
-			return ResponseEntity.ok(optionalProduct.get());
-		} else {
-			return ResponseEntity.notFound().build();
-		}
+	public ResponseEntity<ProductDTO> findById(@PathVariable long id) {
+		return productService.findById(id).map(ProductDTO::new)
+				.map(ResponseEntity::ok)
+				.orElse(ResponseEntity.notFound().build());
 	}
-	
+
 	@PostMapping
 	public Product create(@RequestBody Product product) {
 		return this.productService.createOrUpdate(product);
 	}
-	
+
 	@DeleteMapping("{id}")
 	public void deleteById(@PathVariable long id) {
 		this.productService.deleteById(id);
 	}
-	
+
 	@PutMapping("{id}")
 	public ResponseEntity<Product> updateById(@PathVariable long id, @RequestBody Product input) {
 		Optional<Product> optionalTarget = this.productService.findById(id);
-		
+
 		if (optionalTarget.isEmpty()) {
 			return null;
 		}
-		
+
 		Product target = optionalTarget.get();
 		target.setProductType(input.getProductType());
 		target.setProductName(input.getProductName());
@@ -65,9 +64,10 @@ public class ProductController {
 		target.setPrice(input.getPrice());
 		target.setWeight(input.getWeight());
 		target.setSize(input.getSize());
-		
+		target.setFoto(input.getFoto());
+
 		Product updated = this.productService.createOrUpdate(target);
 		return ResponseEntity.ok(updated);
-				
+
 	}
 }

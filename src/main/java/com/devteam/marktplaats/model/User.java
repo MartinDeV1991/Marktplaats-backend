@@ -1,9 +1,15 @@
 package com.devteam.marktplaats.model;
 
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -12,12 +18,22 @@ public class User {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	public long id;
-	public String address;
-	public String name;
-	public String email;
-	public String password;
-	public String paymentDetails;
+	private long id;
+	private String address;
+	private String name;
+	private String email;
+	private String password;
+	private String paymentDetails;
+	
+	@OneToMany(mappedBy="user", cascade = CascadeType.ALL)
+	private List<Product> products;
+	
+	@OneToMany(mappedBy="user", cascade = CascadeType.ALL)
+	private List<Order> orders;
+	
+	@OneToOne
+	@JoinColumn(name = "shoppingCart_id")
+	private ShoppingCart shoppingCart;
 	
 	public long getId() {
 		return id;
@@ -55,5 +71,23 @@ public class User {
 	public void setPaymentDetails(String paymentDetails) {
 		this.paymentDetails = paymentDetails;
 	}
-
+	public List<Product> getProducts() {
+		return products;
+	}
+	public void setProducts(List<Product> products) {
+		this.products = products;
+	}
+	public List<Order> getOrders() {
+		return orders;
+	}
+	public void setOrders(List<Order> orders) {
+		this.orders = orders;
+	}
+	public ShoppingCart getShoppingCart() {
+		return shoppingCart;
+	}
+	public void setShoppingCart(ShoppingCart shoppingCart) {
+		this.shoppingCart = shoppingCart;
+	}
+	
 }
