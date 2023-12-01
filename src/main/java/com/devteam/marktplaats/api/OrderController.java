@@ -36,6 +36,16 @@ public class OrderController {
 				.orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping("by_user/{id}")
+    public ResponseEntity<List<OrderDTO>> findByUser(@PathVariable long id) {
+    	List<OrderDTO> orderDTOList = orderService.findByUser(id)
+    			.stream()
+				.map(OrderDTO::new)
+				.collect(Collectors.toList());
+    	 return ResponseEntity.ok(orderDTOList);
+    }
+    
+    
     @PostMapping
     public Order create(@RequestBody Order order) {
         return this.orderService.createOrUpdate(order);

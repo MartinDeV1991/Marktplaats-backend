@@ -1,6 +1,5 @@
 package com.devteam.marktplaats.service;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -8,11 +7,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.devteam.marktplaats.dto.ProductDTO;
-import com.devteam.marktplaats.model.Order;
 import com.devteam.marktplaats.model.Product;
 import com.devteam.marktplaats.model.User;
-import com.devteam.marktplaats.persistence.OrderRepository;
 import com.devteam.marktplaats.persistence.ProductRepository;
 import com.devteam.marktplaats.persistence.UserRepository;
 
@@ -25,9 +21,6 @@ public class ProductService {
 	
 	@Autowired
 	private UserRepository userRepository;
-	
-	@Autowired
-	private OrderRepository orderRepository;
 	
 	public List<Product> getAllProducts() {
 		return productRepository.findAll();

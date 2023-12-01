@@ -11,6 +11,7 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Stream;
 
 @Entity
 @Table(name = "shopping_cart")
@@ -59,5 +60,5 @@ public class ShoppingCart {
 	public void setItem(List<Item> item) {
 		this.item = item;
 	}
-    
+
 }

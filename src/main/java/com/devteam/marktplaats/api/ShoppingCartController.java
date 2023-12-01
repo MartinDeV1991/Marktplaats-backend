@@ -36,6 +36,14 @@ public class ShoppingCartController {
 				.orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping("by_user/{id}")
+    public ResponseEntity<ShoppingCartDTO> findByUser(@PathVariable long id) {
+    	return shoppingCartService.findByUser(id)
+                .map(ShoppingCartDTO::new)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+    
     @PostMapping
     public ShoppingCart create(@RequestBody ShoppingCart shoppingCart) {
         return this.shoppingCartService.createOrUpdate(shoppingCart);

@@ -1,6 +1,7 @@
 package com.devteam.marktplaats.api;
 
 import com.devteam.marktplaats.dto.ItemDTO;
+import com.devteam.marktplaats.dto.ItemProductDTO;
 import com.devteam.marktplaats.dto.ProductDTO;
 import com.devteam.marktplaats.model.Item;
 import com.devteam.marktplaats.model.Product;
@@ -21,27 +22,37 @@ public class ItemController {
 	private ItemService itemService;
 
 	@GetMapping
-    public List<ItemDTO> getAllItems() {
+    public List<ItemProductDTO> getAllItems() {
         return itemService.getAllItems()
         		.stream()
-        		.map(ItemDTO::new)
+        		.map(item -> new ItemProductDTO(item, item.getProduct()))
         		.collect(Collectors.toList());
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<ItemDTO> getById(@PathVariable long id) {
+    public ResponseEntity<ItemProductDTO> getById(@PathVariable long id) {
         return itemService.findById(id)
-                .map(ItemDTO::new)
+                .map(item -> new ItemProductDTO(item, item.getProduct()))
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
     
     @GetMapping("by_order/{id}")
-	public ResponseEntity<List<ItemDTO>> findByOrder(@PathVariable long id) {
-		List<ItemDTO> itemDTOList = itemService.findByOrder(id)
-				.stream().map(ItemDTO::new)
+	public ResponseEntity<List<ItemProductDTO>> findByOrder(@PathVariable long id) {
+		List<ItemProductDTO> itemProductDTOList = itemService.findByOrder(id)
+				.stream()
+				.map(item -> new ItemProductDTO(item, item.getProduct()))
 				.collect(Collectors.toList());
-		return ResponseEntity.ok(itemDTOList);
+		return ResponseEntity.ok(itemProductDTOList);
+	}
+    
+    @GetMapping("by_shopping_cart/{id}")
+	public ResponseEntity<List<ItemProductDTO>> findByShoppingCart(@PathVariable long id) {
+		List<ItemProductDTO> itemProductDTOList = itemService.findByShoppingCart(id)
+				.stream()
+				.map(item -> new ItemProductDTO(item, item.getProduct()))
+				.collect(Collectors.toList());
+		return ResponseEntity.ok(itemProductDTOList);
 	}
     
 	@PostMapping
