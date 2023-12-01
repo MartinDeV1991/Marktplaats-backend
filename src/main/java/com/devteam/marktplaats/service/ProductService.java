@@ -53,17 +53,6 @@ public class ProductService {
 		} else {
 			return Collections.emptyList();
 		}
-		
-	}
-
-	public List<Product> findByOrder(long id) {
-		Optional<Order> optionalOrder = this.orderRepository.findById(id);
-		if (optionalOrder.isPresent()) {
-			return this.productRepository.findByOrder(optionalOrder.get());
-		} else {
-			return Collections.emptyList();
-		}
-		
 	}
 	
 }

@@ -48,15 +48,7 @@ public class ProductController {
 				.stream().map(ProductDTO::new)
 				.collect(Collectors.toList());
 		return ResponseEntity.ok(productDTOList);
-	}
-	@GetMapping("by_order/{id}")
-	public ResponseEntity<List<ProductDTO>> findByOrder(@PathVariable long id) {
-		List<ProductDTO> productDTOList = productService.findByOrder(id)
-				.stream().map(ProductDTO::new)
-				.collect(Collectors.toList());
-		return ResponseEntity.ok(productDTOList);
-	}
-	
+	}	
 	
 	@PostMapping
 	public Product create(@RequestBody Product product) {
