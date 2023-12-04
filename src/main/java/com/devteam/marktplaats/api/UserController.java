@@ -38,7 +38,7 @@ public class UserController {
 
     @PostMapping
     public User create(@RequestBody User user) {
-        return this.userService.createOrUpdate(user);
+        return this.userService.create(user);
     }
 
     @DeleteMapping("{id}")
@@ -60,9 +60,8 @@ public class UserController {
         target.setEmail(input.getEmail());
         target.setPassword(input.getPassword());
         target.setPaymentDetails(input.getPaymentDetails());
-        
 
-        User updated = this.userService.createOrUpdate(target);
+        User updated = this.userService.update(target);
         return ResponseEntity.ok(updated);
     }
 }

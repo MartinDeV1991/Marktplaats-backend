@@ -36,9 +36,9 @@ public class OrderController {
 				.orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping("by_user/{id}")
-    public ResponseEntity<List<OrderDTO>> findByUser(@PathVariable long id) {
-    	List<OrderDTO> orderDTOList = orderService.findByUser(id)
+    @GetMapping("by_user/{user_id}")
+    public ResponseEntity<List<OrderDTO>> findByUser(@PathVariable long user_id) {
+    	List<OrderDTO> orderDTOList = orderService.findByUser(user_id)
     			.stream()
 				.map(OrderDTO::new)
 				.collect(Collectors.toList());
@@ -46,9 +46,9 @@ public class OrderController {
     }
     
     
-    @PostMapping
-    public Order create(@RequestBody Order order) {
-        return this.orderService.createOrUpdate(order);
+    @PostMapping("user/{user_id}")
+    public Order create(@PathVariable long user_id, @RequestBody Order order) {
+    	return this.orderService.create(order, user_id);
     }
 
     @DeleteMapping("{id}")
@@ -72,7 +72,7 @@ public class OrderController {
         target.setPaymentMethod(input.getPaymentMethod());
         target.setStatus(input.getStatus());
 
-        Order updated = this.orderService.createOrUpdate(target);
+        Order updated = this.orderService.update(target);
         return ResponseEntity.ok(updated);
     }
 }

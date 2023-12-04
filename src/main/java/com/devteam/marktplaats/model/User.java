@@ -31,8 +31,7 @@ public class User {
 	@OneToMany(mappedBy="user", cascade = CascadeType.ALL)
 	private List<Order> orders;
 	
-	@OneToOne
-	@JoinColumn(name = "shoppingCart_id")
+	@OneToOne(mappedBy="user", cascade = CascadeType.ALL)
 	private ShoppingCart shoppingCart;
 	
 	public long getId() {

@@ -6,6 +6,7 @@ import com.devteam.marktplaats.model.Product;
 import com.devteam.marktplaats.model.ShoppingCart;
 import com.devteam.marktplaats.persistence.ItemRepository;
 import com.devteam.marktplaats.persistence.OrderRepository;
+import com.devteam.marktplaats.persistence.ProductRepository;
 import com.devteam.marktplaats.persistence.ShoppingCartRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,31 +20,49 @@ import java.util.Optional;
 public class ItemService {
 
 	@Autowired
-    private ItemRepository itemRepository;
-	
+	private ItemRepository itemRepository;
+
 	@Autowired
 	private OrderRepository orderRepository;
-	
+
+	@Autowired
+	private ProductRepository productRepository;
+
 	@Autowired
 	private ShoppingCartRepository shoppingCartRepository;
 
-    public List<Item> getAllItems() {
-        return itemRepository.findAll();
-    }
+	public List<Item> getAllItems() {
+		return itemRepository.findAll();
+	}
 
-    public Optional<Item> findById(long id) {
-        return itemRepository.findById(id);
-    }
+	public Optional<Item> findById(long id) {
+		return itemRepository.findById(id);
+	}
 
-    public Item createOrUpdate(Item item) {
-        return itemRepository.save(item);
-    }
+	public Item addToCart(Item item, long product_id, long cart_id) {
+		Optional<Product> optionalProduct = productRepository.findById(product_id);
+		Optional<ShoppingCart> optionalShoppingCart = shoppingCartRepository.findById(cart_id);
+		if (optionalProduct.isPresent() && optionalShoppingCart.isPresent()) {
+			item.setProduct(optionalProduct.get());
+			item.setShoppingCart(optionalShoppingCart.get());
+			return itemRepository.save(item);
+		}
+		return null;
+	}
 
-    public void deleteById(long id) {
-        itemRepository.deleteById(id);
-    }
+	public Item create(Item item) {
+		return itemRepository.save(item);
+	}
 
-    public List<Item> findByOrder(long id) {
+	public Item update(Item item) {
+		return itemRepository.save(item);
+	}
+
+	public void deleteById(long id) {
+		itemRepository.deleteById(id);
+	}
+
+	public List<Item> findByOrder(long id) {
 		Optional<Order> optionalOrder = this.orderRepository.findById(id);
 		if (optionalOrder.isPresent()) {
 			return this.itemRepository.findByOrder(optionalOrder.get());
@@ -51,8 +70,8 @@ public class ItemService {
 			return Collections.emptyList();
 		}
 	}
-    
-    public List<Item> findByShoppingCart(long id) {
+
+	public List<Item> findByShoppingCart(long id) {
 		Optional<ShoppingCart> optionalShoppingCart = this.shoppingCartRepository.findById(id);
 		if (optionalShoppingCart.isPresent()) {
 			return this.itemRepository.findByShoppingCart(optionalShoppingCart.get());
@@ -60,5 +79,5 @@ public class ItemService {
 			return Collections.emptyList();
 		}
 	}
-    
+
 }

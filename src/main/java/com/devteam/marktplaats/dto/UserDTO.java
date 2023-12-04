@@ -5,6 +5,7 @@ import com.devteam.marktplaats.model.User;
 public class UserDTO {
 
 	private long id;
+	private String name;
     private String address;
     private String email;
     private String password;
@@ -12,6 +13,7 @@ public class UserDTO {
 
     public UserDTO(User user) {
     	this.id = user.getId();
+    	this.name = user.getName();
         this.address = user.getAddress();
         this.email = user.getEmail();
         this.password = user.getPassword();
@@ -22,6 +24,9 @@ public class UserDTO {
 		return id;
 	}
     
+    public String getName() {
+    	return name;
+    }
     public String getAddress() {
         return address;
     }

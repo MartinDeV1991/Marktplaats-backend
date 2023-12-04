@@ -55,9 +55,9 @@ public class ItemController {
 		return ResponseEntity.ok(itemProductDTOList);
 	}
     
-	@PostMapping
-	public Item create(@RequestBody Item item) {
-		return itemService.createOrUpdate(item);
+	@PostMapping("add_to_cart/{product_id}/{shopping_cart_id}")
+	public Item addToCart(@PathVariable long product_id, @PathVariable long shopping_cart_id, @RequestBody Item item) {
+		return itemService.addToCart(item, product_id, shopping_cart_id);
 	}
 
 	@DeleteMapping("{id}")
@@ -75,7 +75,7 @@ public class ItemController {
 		Item target = optionalTarget.get();
 		target.setQuantity(input.getQuantity());
 		
-		Item updated = this.itemService.createOrUpdate(target);
+		Item updated = this.itemService.update(target);
 		return ResponseEntity.ok(updated);
 	}
 
