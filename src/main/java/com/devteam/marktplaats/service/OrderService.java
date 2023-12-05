@@ -17,6 +17,8 @@ import com.devteam.marktplaats.persistence.ItemRepository;
 import com.devteam.marktplaats.persistence.OrderRepository;
 import com.devteam.marktplaats.persistence.UserRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class OrderService {
 
@@ -41,6 +43,7 @@ public class OrderService {
         return this.orderRepository.save(order);
     }
     
+    @Transactional
     public Order create(Order order, long user_id) {
     	Optional<User> optionalUser = this.userRepository.findById(user_id);
     	
@@ -51,22 +54,14 @@ public class OrderService {
     		order.setUser(user);
     		Order savedOrder = this.orderRepository.save(order);
     		List<Item> itemsFromCart = cart.getItem();
-    		List<Long> itemIdsToDelete = new ArrayList<>();
             for (Item item : itemsFromCart) {
                 Item newItem = new Item();
                 newItem.setProduct(item.getProduct());
                 newItem.setQuantity(item.getQuantity());
                 newItem.setOrder(order);
-                System.out.println("Before saving item");
                 itemRepository.save(newItem);
-                System.out.println("After saving item");
-                itemIdsToDelete.add(item.getId());
             }
-            System.out.println("Id list to delete: " + itemIdsToDelete);
-            itemRepository.deleteById(itemIdsToDelete.get(0));
-            itemIdsToDelete.forEach(itemId -> itemRepository.deleteById(itemId));
-            System.out.println("Id list to delete: " + itemIdsToDelete);
-            return null;
+            return savedOrder;
     	}
         return null;
     }

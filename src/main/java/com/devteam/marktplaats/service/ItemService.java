@@ -4,10 +4,14 @@ import com.devteam.marktplaats.model.Item;
 import com.devteam.marktplaats.model.Order;
 import com.devteam.marktplaats.model.Product;
 import com.devteam.marktplaats.model.ShoppingCart;
+import com.devteam.marktplaats.model.User;
 import com.devteam.marktplaats.persistence.ItemRepository;
 import com.devteam.marktplaats.persistence.OrderRepository;
 import com.devteam.marktplaats.persistence.ProductRepository;
 import com.devteam.marktplaats.persistence.ShoppingCartRepository;
+import com.devteam.marktplaats.persistence.UserRepository;
+
+import jakarta.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +34,9 @@ public class ItemService {
 
 	@Autowired
 	private ShoppingCartRepository shoppingCartRepository;
+	
+	@Autowired
+	private UserRepository userRepository;
 
 	public List<Item> getAllItems() {
 		return itemRepository.findAll();
@@ -77,6 +84,16 @@ public class ItemService {
 			return this.itemRepository.findByShoppingCart(optionalShoppingCart.get());
 		} else {
 			return Collections.emptyList();
+		}
+	}
+	
+	@Transactional
+	public void emptyCart(long user_id) {
+		Optional<User> optionalUser = this.userRepository.findById(user_id);
+		if (optionalUser.isPresent()) {
+    		User user = optionalUser.get();
+    		ShoppingCart cart = user.getShoppingCart();
+    		itemRepository.deleteByShoppingCart(cart);    		
 		}
 	}
 

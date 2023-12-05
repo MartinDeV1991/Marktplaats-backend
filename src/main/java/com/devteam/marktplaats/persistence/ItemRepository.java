@@ -14,4 +14,6 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 	List<Item> findByOrder(Order order);
 
 	List<Item> findByShoppingCart(ShoppingCart shoppingCart);
+
+	void deleteByShoppingCart(ShoppingCart cart);
 }

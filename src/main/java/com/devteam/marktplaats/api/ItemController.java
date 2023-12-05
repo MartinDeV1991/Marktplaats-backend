@@ -60,6 +60,11 @@ public class ItemController {
 		return itemService.addToCart(item, product_id, shopping_cart_id);
 	}
 
+	@DeleteMapping("empty_cart/{user_id}")
+	public void deleteByShoppingCart(@PathVariable long user_id) {
+		itemService.emptyCart(user_id);
+	}
+	
 	@DeleteMapping("{id}")
 	public void deleteById(@PathVariable long id) {
 		itemService.deleteById(id);
