@@ -50,9 +50,9 @@ public class ProductController {
 		return ResponseEntity.ok(productDTOList);
 	}	
 	
-	@PostMapping
-	public Product create(@RequestBody Product product) {
-		return this.productService.createOrUpdate(product);
+	@PostMapping("user/{user_id}")
+	public Product create(@PathVariable long user_id, @RequestBody Product product) {
+		return this.productService.create(product, user_id);
 	}
 
 	@DeleteMapping("{id}")

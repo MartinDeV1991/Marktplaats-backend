@@ -1,6 +1,5 @@
 package com.devteam.marktplaats.service;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 

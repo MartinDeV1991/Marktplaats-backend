@@ -33,6 +33,14 @@ public class ProductService {
 	public Product createOrUpdate(Product product) {
 		return this.productRepository.save(product);
 	}
+	
+	public Product create(Product product, long user_id) {
+		Optional<User> optionalUser = this.userRepository.findById(user_id);
+		if (optionalUser.isPresent()) {
+			product.setUser(optionalUser.get());
+		}
+		return this.productRepository.save(product);
+	}
 
 	public void deleteById(long id) {
 		this.productRepository.deleteById(id);
