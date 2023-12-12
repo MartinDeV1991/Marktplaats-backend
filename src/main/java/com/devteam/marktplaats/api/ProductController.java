@@ -51,8 +51,8 @@ public class ProductController {
 	}	
 	
 	@PostMapping("user/{user_id}")
-	public Product create(@PathVariable long user_id, @RequestBody Product product) {
-		return this.productService.create(product, user_id);
+	public ProductDTO create(@PathVariable long user_id, @RequestBody Product product) {
+		return new ProductDTO(this.productService.create(product, user_id));
 	}
 
 	@DeleteMapping("{id}")
@@ -61,7 +61,7 @@ public class ProductController {
 	}
 
 	@PutMapping("{id}")
-	public ResponseEntity<Product> updateById(@PathVariable long id, @RequestBody Product input) {
+	public ResponseEntity<ProductDTO> updateById(@PathVariable long id, @RequestBody Product input) {
 		Optional<Product> optionalTarget = this.productService.findById(id);
 
 		if (optionalTarget.isEmpty()) {
@@ -77,7 +77,7 @@ public class ProductController {
 		target.setSize(input.getSize());
 		target.setFoto(input.getFoto());
 
-		Product updated = this.productService.createOrUpdate(target);
+		ProductDTO updated = new ProductDTO(this.productService.createOrUpdate(target));
 		return ResponseEntity.ok(updated);
 
 	}

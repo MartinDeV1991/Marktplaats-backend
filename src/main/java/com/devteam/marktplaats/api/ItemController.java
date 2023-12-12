@@ -2,9 +2,7 @@ package com.devteam.marktplaats.api;
 
 import com.devteam.marktplaats.dto.ItemDTO;
 import com.devteam.marktplaats.dto.ItemProductDTO;
-import com.devteam.marktplaats.dto.ProductDTO;
 import com.devteam.marktplaats.model.Item;
-import com.devteam.marktplaats.model.Product;
 import com.devteam.marktplaats.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -56,8 +54,8 @@ public class ItemController {
 	}
     
 	@PostMapping("add_to_cart/{product_id}/{shopping_cart_id}")
-	public Item addToCart(@PathVariable long product_id, @PathVariable long shopping_cart_id, @RequestBody Item item) {
-		return itemService.addToCart(item, product_id, shopping_cart_id);
+	public ItemDTO addToCart(@PathVariable long product_id, @PathVariable long shopping_cart_id, @RequestBody Item item) {
+		return new ItemDTO(itemService.addToCart(item, product_id, shopping_cart_id));
 	}
 
 	@DeleteMapping("empty_cart/{user_id}")
@@ -71,7 +69,7 @@ public class ItemController {
 	}
 	
 	@PutMapping("{id}")
-	public ResponseEntity<Item> updateItem(@PathVariable long id, @RequestBody Item input) {
+	public ResponseEntity<ItemDTO> updateItem(@PathVariable long id, @RequestBody Item input) {
 		Optional<Item> optionalTarget = this.itemService.findById(id);
 		
 		if (optionalTarget.isEmpty()) {
@@ -80,7 +78,7 @@ public class ItemController {
 		Item target = optionalTarget.get();
 		target.setQuantity(input.getQuantity());
 		
-		Item updated = this.itemService.update(target);
+		ItemDTO updated = new ItemDTO(this.itemService.update(target));
 		return ResponseEntity.ok(updated);
 	}
 

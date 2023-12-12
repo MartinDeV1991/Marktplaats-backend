@@ -37,8 +37,8 @@ public class UserController {
     }
 
     @PostMapping
-    public User create(@RequestBody User user) {
-        return this.userService.create(user);
+    public UserDTO create(@RequestBody User user) {
+        return new UserDTO(this.userService.create(user));
     }
 
     @DeleteMapping("{id}")
@@ -47,7 +47,7 @@ public class UserController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<User> updateById(@PathVariable long id, @RequestBody User input) {
+    public ResponseEntity<UserDTO> updateById(@PathVariable long id, @RequestBody User input) {
         Optional<User> optionalTarget = this.userService.findById(id);
 
         if (optionalTarget.isEmpty()) {
@@ -61,7 +61,7 @@ public class UserController {
         target.setPassword(input.getPassword());
         target.setPaymentDetails(input.getPaymentDetails());
 
-        User updated = this.userService.update(target);
+        UserDTO updated = new UserDTO(this.userService.update(target));
         return ResponseEntity.ok(updated);
     }
 }
