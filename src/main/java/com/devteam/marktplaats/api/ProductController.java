@@ -16,8 +16,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.devteam.marktplaats.dto.ProductDTO;
+import com.devteam.marktplaats.model.Foto;
 import com.devteam.marktplaats.model.Product;
+import com.devteam.marktplaats.persistence.FotoRepository;
+import com.devteam.marktplaats.service.FotoService;
 import com.devteam.marktplaats.service.ProductService;
+
+import jakarta.transaction.Transactional;
 
 @RestController
 @RequestMapping("api/product")
@@ -26,38 +31,29 @@ public class ProductController {
 	@Autowired
 	private ProductService productService;
 
+	@Autowired
+	private FotoRepository fotoRepository;
+	
 	@GetMapping
 	public List<ProductDTO> findAllProducts() {
-		return productService.getAllProducts()
-				.stream()
-				.map(ProductDTO::new)
-				.collect(Collectors.toList());
+		return productService.getAllProducts().stream().map(ProductDTO::new).collect(Collectors.toList());
 	}
 
 	@GetMapping("{id}")
 	public ResponseEntity<ProductDTO> findById(@PathVariable long id) {
-		return productService.findById(id)
-				.map(ProductDTO::new)
-				.map(ResponseEntity::ok)
+		return productService.findById(id).map(ProductDTO::new).map(ResponseEntity::ok)
 				.orElse(ResponseEntity.notFound().build());
 	}
-	
+
 	@GetMapping("by_user/{id}")
 	public ResponseEntity<List<ProductDTO>> findByUser(@PathVariable long id) {
-		List<ProductDTO> productDTOList = productService.findByUser(id)
-				.stream().map(ProductDTO::new)
+		List<ProductDTO> productDTOList = productService.findByUser(id).stream().map(ProductDTO::new)
 				.collect(Collectors.toList());
 		return ResponseEntity.ok(productDTOList);
-	}	
-	
+	}
+
 	@PostMapping("user/{user_id}")
 	public ProductDTO create(@PathVariable long user_id, @RequestBody Product product) {
-		
-		System.out.println("-------------------------------------");
-		System.out.println("-------------------------------------");
-		System.out.println(product.getFoto());
-		System.out.println("-------------------------------------");
-		System.out.println("-------------------------------------");
 		return new ProductDTO(this.productService.create(product, user_id));
 	}
 
@@ -66,6 +62,7 @@ public class ProductController {
 		this.productService.deleteById(id);
 	}
 
+	@Transactional
 	@PutMapping("{id}")
 	public ResponseEntity<ProductDTO> updateById(@PathVariable long id, @RequestBody Product input) {
 		Optional<Product> optionalTarget = this.productService.findById(id);
@@ -81,9 +78,21 @@ public class ProductController {
 		target.setPrice(input.getPrice());
 		target.setWeight(input.getWeight());
 		target.setSize(input.getSize());
+		
+		List<Foto> fotos = target.getFoto();
+		if (target.getFoto() != null) {
+			System.out.println(fotos);
+			for (Foto foto : fotos) {
+				System.out.println("deleting a foto: " + foto.getId());
+				this.fotoRepository.deleteById(foto.getId());
+				
+			}
+		}
+		
 		target.setFoto(input.getFoto());
+		System.out.println(target.getFoto());
 
-		ProductDTO updated = new ProductDTO(this.productService.createOrUpdate(target));
+		ProductDTO updated = new ProductDTO(this.productService.update(target));
 		return ResponseEntity.ok(updated);
 
 	}
