@@ -1,5 +1,6 @@
 package com.devteam.marktplaats.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.devteam.marktplaats.model.Foto;
@@ -14,7 +15,7 @@ public class ProductDTO {
     private double price;
     private double weight;
     private String size;
-    private List<Foto> foto;
+    private List<String> foto;
 
     public ProductDTO(Product product) {
     	this.id = product.getId();
@@ -24,7 +25,10 @@ public class ProductDTO {
         this.price = product.getPrice();
         this.weight = product.getWeight();
         this.size = product.getSize();
-        this.foto = product.getFoto();
+        this.foto = new ArrayList<>();
+        for (Foto foto : product.getFoto()) {
+        	this.foto.add(foto.getUrl());
+        }
     }
 
     public long getId() {
@@ -55,7 +59,7 @@ public class ProductDTO {
 		return size;
 	}
 
-	public List<Foto> getFoto() {
+	public List<String> getFoto() {
 		return foto;
 	}
 

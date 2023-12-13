@@ -85,6 +85,7 @@ public class Product {
 		return foto;
 	}
 	public void setFoto(List<Foto> foto) {
+		System.out.println("-------------------------------------");
 		this.foto = foto;
 	}
 	public User getUser() {

@@ -21,6 +21,14 @@ public class Foto {
 	@JoinColumn(name = "product_id")
 	private Product product;
 
+	public Foto() {
+		
+	}
+	
+	public Foto(String url) {
+		this.url = url;
+	}
+	
 	public long getId() {
 		return id;
 	}

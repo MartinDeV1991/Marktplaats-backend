@@ -52,8 +52,12 @@ public class ProductController {
 	
 	@PostMapping("user/{user_id}")
 	public ProductDTO create(@PathVariable long user_id, @RequestBody Product product) {
+		
+		System.out.println("-------------------------------------");
+		System.out.println("-------------------------------------");
 		System.out.println(product.getFoto());
-		product.setFoto(null);
+		System.out.println("-------------------------------------");
+		System.out.println("-------------------------------------");
 		return new ProductDTO(this.productService.create(product, user_id));
 	}
 
