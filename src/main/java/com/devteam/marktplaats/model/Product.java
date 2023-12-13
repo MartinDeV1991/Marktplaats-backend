@@ -25,7 +25,9 @@ public class Product {
 	private double price;
 	private double weight;
 	private String size;
-	private String foto;
+	
+	@OneToMany(mappedBy="product", cascade = CascadeType.ALL)
+	private List<Foto> foto;
 	
 	@ManyToOne
 	@JoinColumn(name = "user_id")
@@ -79,10 +81,10 @@ public class Product {
 	public void setSize(String size) {
 		this.size = size;
 	}
-	public String getFoto() {
+	public List<Foto> getFoto() {
 		return foto;
 	}
-	public void setFoto(String foto) {
+	public void setFoto(List<Foto> foto) {
 		this.foto = foto;
 	}
 	public User getUser() {

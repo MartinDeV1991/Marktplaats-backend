@@ -20,8 +20,8 @@ import com.devteam.marktplaats.model.Product;
 import com.devteam.marktplaats.service.ProductService;
 
 @RestController
-@RequestMapping("api/product")
-public class ProductController {
+@RequestMapping("api/foto")
+public class FotoController {
 
 	@Autowired
 	private ProductService productService;
@@ -53,7 +53,6 @@ public class ProductController {
 	@PostMapping("user/{user_id}")
 	public ProductDTO create(@PathVariable long user_id, @RequestBody Product product) {
 		System.out.println(product.getFoto());
-		product.setFoto(null);
 		return new ProductDTO(this.productService.create(product, user_id));
 	}
 
