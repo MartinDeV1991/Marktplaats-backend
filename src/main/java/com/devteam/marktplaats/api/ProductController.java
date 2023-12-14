@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.devteam.marktplaats.dto.ProductDTO;
 import com.devteam.marktplaats.model.Foto;
 import com.devteam.marktplaats.model.Product;
+import com.devteam.marktplaats.model.ProductDetails;
 import com.devteam.marktplaats.persistence.FotoRepository;
+import com.devteam.marktplaats.persistence.ProductDetailsRepository;
 import com.devteam.marktplaats.service.FotoService;
 import com.devteam.marktplaats.service.ProductService;
 
@@ -33,6 +35,9 @@ public class ProductController {
 
 	@Autowired
 	private FotoRepository fotoRepository;
+	
+	@Autowired
+	private ProductDetailsRepository productDetailsRepository;
 	
 	@GetMapping
 	public List<ProductDTO> findAllProducts() {
@@ -81,17 +86,22 @@ public class ProductController {
 		
 		List<Foto> fotos = target.getFoto();
 		if (target.getFoto() != null) {
-			System.out.println(fotos);
 			for (Foto foto : fotos) {
-				System.out.println("deleting a foto: " + foto.getId());
 				this.fotoRepository.deleteById(foto.getId());
+				
+			}
+		}
+		List<ProductDetails> productDetails = target.getProductDetails();
+		if (target.getProductDetails() != null) {
+			for (ProductDetails productDetail : productDetails) {
+				this.productDetailsRepository.deleteById(productDetail.getId());
 				
 			}
 		}
 		
 		target.setFoto(input.getFoto());
-		System.out.println(target.getFoto());
-
+		target.setProductDetails(input.getProductDetails());
+		
 		ProductDTO updated = new ProductDTO(this.productService.update(target));
 		return ResponseEntity.ok(updated);
 

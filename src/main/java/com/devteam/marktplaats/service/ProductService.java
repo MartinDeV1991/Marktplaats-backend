@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.devteam.marktplaats.model.Foto;
 import com.devteam.marktplaats.model.Product;
+import com.devteam.marktplaats.model.ProductDetails;
 import com.devteam.marktplaats.model.User;
 import com.devteam.marktplaats.persistence.FotoRepository;
 import com.devteam.marktplaats.persistence.ProductRepository;
@@ -25,9 +26,6 @@ public class ProductService {
 	@Autowired
 	private UserRepository userRepository;
 	
-	@Autowired
-	private FotoRepository fotoRepository;
-
 	public List<Product> getAllProducts() {
 		return productRepository.findAll();
 	}
@@ -38,21 +36,15 @@ public class ProductService {
 
 	@Transactional
 	public Product update(Product product) {
-//		System.out.println("fotos worden gezocht");
-//		List<Foto> fotos = findById(product.getId()).get().getFoto();
-//		
-//		if (fotos != null) {
-//			System.out.println(fotos);
-//			for (Foto foto : fotos) {
-//				System.out.println("deleting a foto: " + foto.getId());
-//				this.fotoRepository.deleteById(foto.getId());
-//				
-//			}
-//		}
 		
 		if (product.getFoto() != null) {
 			for (Foto foto : product.getFoto()) {
 				foto.setProduct(product);
+			}
+		}
+		if (product.getProductDetails() != null) {
+			for (ProductDetails productDetails : product.getProductDetails()) {
+				productDetails.setProduct(product);
 			}
 		}
 		
@@ -69,6 +61,12 @@ public class ProductService {
 		if (product.getFoto() != null) {
 			for (Foto foto : product.getFoto()) {
 				foto.setProduct(product);
+			}
+		}
+		
+		if (product.getProductDetails() != null) {
+			for (ProductDetails productDetails : product.getProductDetails()) {
+				productDetails.setProduct(product);
 			}
 		}
 		
