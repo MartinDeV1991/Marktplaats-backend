@@ -13,4 +13,6 @@ import com.devteam.marktplaats.model.User;
 public interface ProductRepository extends JpaRepository<Product, Long>{
 
 	List<Product> findByUser(User user);
+
+	List<Product> findByProductNameContaining(String name);
 }

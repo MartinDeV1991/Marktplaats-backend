@@ -30,6 +30,10 @@ public class ProductService {
 		return productRepository.findAll();
 	}
 
+	public List<Product> findProductsByName(String name) {
+		return productRepository.findByProductNameContaining(name);
+	}
+	
 	public Optional<Product> findById(long id) {
 		return this.productRepository.findById(id);
 	}

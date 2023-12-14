@@ -21,7 +21,6 @@ import com.devteam.marktplaats.model.Product;
 import com.devteam.marktplaats.model.ProductDetails;
 import com.devteam.marktplaats.persistence.FotoRepository;
 import com.devteam.marktplaats.persistence.ProductDetailsRepository;
-import com.devteam.marktplaats.service.FotoService;
 import com.devteam.marktplaats.service.ProductService;
 
 import jakarta.transaction.Transactional;
@@ -42,6 +41,11 @@ public class ProductController {
 	@GetMapping
 	public List<ProductDTO> findAllProducts() {
 		return productService.getAllProducts().stream().map(ProductDTO::new).collect(Collectors.toList());
+	}
+	
+	@GetMapping("/search_name/{name}")
+	public List<ProductDTO> findProductsByName(@PathVariable String name) {
+		return productService.findProductsByName(name).stream().map(ProductDTO::new).collect(Collectors.toList());
 	}
 
 	@GetMapping("{id}")
