@@ -19,9 +19,10 @@ public class ItemProductDTO {
     private double price;
     private double weight;
     private String size;
-    private List<Foto> foto;
-    private List<ProductDetails> productDetails;
-
+//    private List<Foto> foto;
+//    private List<ProductDetailsName> productDetailsName;
+//    private List<ProductDetailsValue> productDetailsValue;
+    
     public ItemProductDTO(Item item, Product product) {
         this.itemId = item.getId();
         this.quantity = item.getQuantity();
@@ -33,8 +34,8 @@ public class ItemProductDTO {
         this.price = product.getPrice();
         this.weight = product.getWeight();
         this.size = product.getSize();
-        this.foto = product.getFoto();   
-        this.productDetails = product.getProductDetails();
+//        this.foto = product.getFoto();   
+//        this.ProductDetailsName = product.getProductDetails().get;
     }
 
 	public long getItemId() {
@@ -71,14 +72,6 @@ public class ItemProductDTO {
 
 	public String getSize() {
 		return size;
-	}
-
-	public List<Foto> getFoto() {
-		return foto;
-	}
-
-	public List<ProductDetails> getProductDetails() {
-		return productDetails;
 	}
 
 }
