@@ -3,6 +3,7 @@ package com.devteam.marktplaats.model;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,6 +25,9 @@ public class User {
 	private String email;
 	private String password;
 	private String paymentDetails;
+	
+	@Column(length = 100, nullable = true)
+	private String token;
 	
 	@OneToMany(mappedBy="user", cascade = CascadeType.ALL)
 	private List<Product> products;
@@ -69,6 +73,12 @@ public class User {
 	}
 	public void setPaymentDetails(String paymentDetails) {
 		this.paymentDetails = paymentDetails;
+	}
+	public String getToken() {
+		return token;
+	}
+	public void setToken(String token) {
+		this.token = token;
 	}
 	public List<Product> getProducts() {
 		return products;
