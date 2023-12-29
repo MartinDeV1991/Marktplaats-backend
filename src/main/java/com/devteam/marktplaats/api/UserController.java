@@ -36,7 +36,7 @@ public class UserController {
 				.orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping
+    @PostMapping("signup")
     public UserDTO create(@RequestBody User user) {
         return new UserDTO(this.userService.create(user));
     }
