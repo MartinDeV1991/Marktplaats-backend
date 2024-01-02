@@ -10,42 +10,47 @@ import com.devteam.marktplaats.model.ProductDetails;
 public class ProductDTO {
 
 	private long id;
-    private String productType;
-    private String productName;
-    private String productDescription;
-    private double price;
-    private double weight;
-    private String size;
-    private List<String> foto;
-    private List<String> propertyName;
-    private List<String> propertyValue;
+	private String productType;
+	private String productName;
+	private String productDescription;
+	private double price;
+	private double weight;
+	private String size;
+	private List<String> foto;
+	private List<String> propertyName;
+	private List<String> propertyValue;
 
-    public ProductDTO(Product product) {
-    	this.id = product.getId();
-        this.productType = product.getProductType();
-        this.productName = product.getProductName();
-        this.productDescription = product.getProductDescription();
-        this.price = product.getPrice();
-        this.weight = product.getWeight();
-        this.size = product.getSize();
-        this.foto = new ArrayList<>();
-        
-        for (Foto foto : product.getFoto()) {
-        	this.foto.add(foto.getUrl());
-        }
-        
-        this.propertyName = new ArrayList<>();
-        this.propertyValue = new ArrayList<>();
-        for (ProductDetails productDetails : product.getProductDetails()) {
-        	this.propertyName.add(productDetails.getPropertyName());
-        	this.propertyValue.add(productDetails.getPropertyValue());
-        }
-    }
+	public ProductDTO(Product product) {
+		this.id = product.getId();
+		this.productType = product.getProductType();
+		this.productName = product.getProductName();
+		this.productDescription = product.getProductDescription();
+		this.price = product.getPrice();
+		this.weight = product.getWeight();
+		this.size = product.getSize();
+		this.foto = new ArrayList<>();
 
-    public long getId() {
+		if (product.getFoto() != null) {
+			for (Foto foto : product.getFoto()) {
+				this.foto.add(foto.getUrl());
+			}
+		}
+
+		this.propertyName = new ArrayList<>();
+		this.propertyValue = new ArrayList<>();
+
+		if (product.getProductDetails() != null) {
+			for (ProductDetails productDetails : product.getProductDetails()) {
+				this.propertyName.add(productDetails.getPropertyName());
+				this.propertyValue.add(productDetails.getPropertyValue());
+			}
+		}
+	}
+
+	public long getId() {
 		return id;
 	}
-    
+
 	public String getProductType() {
 		return productType;
 	}
@@ -81,5 +86,5 @@ public class ProductDTO {
 	public List<String> getPropertyValue() {
 		return propertyValue;
 	}
-	
+
 }
