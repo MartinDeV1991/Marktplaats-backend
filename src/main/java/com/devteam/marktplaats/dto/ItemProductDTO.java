@@ -1,5 +1,6 @@
 package com.devteam.marktplaats.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.devteam.marktplaats.model.Foto;
@@ -19,9 +20,9 @@ public class ItemProductDTO {
     private double price;
     private double weight;
     private String size;
-//    private List<Foto> foto;
-//    private List<ProductDetailsName> productDetailsName;
-//    private List<ProductDetailsValue> productDetailsValue;
+    private List<String> foto;
+	private List<String> propertyName;
+	private List<String> propertyValue;
     
     public ItemProductDTO(Item item, Product product) {
         this.itemId = item.getId();
@@ -34,8 +35,23 @@ public class ItemProductDTO {
         this.price = product.getPrice();
         this.weight = product.getWeight();
         this.size = product.getSize();
-//        this.foto = product.getFoto();   
-//        this.ProductDetailsName = product.getProductDetails().get;
+        this.foto = new ArrayList<>();
+
+		if (product.getFoto() != null) {
+			for (Foto foto : product.getFoto()) {
+				this.foto.add(foto.getUrl());
+			}
+		}
+		
+		this.propertyName = new ArrayList<>();
+		this.propertyValue = new ArrayList<>();
+
+		if (product.getProductDetails() != null) {
+			for (ProductDetails productDetails : product.getProductDetails()) {
+				this.propertyName.add(productDetails.getPropertyName());
+				this.propertyValue.add(productDetails.getPropertyValue());
+			}
+		}
     }
 
 	public long getItemId() {
@@ -74,4 +90,16 @@ public class ItemProductDTO {
 		return size;
 	}
 
+	public List<String> getFoto() {
+		return foto;
+	}
+
+	public List<String> getPropertyName() {
+		return propertyName;
+	}
+
+	public List<String> getPropertyValue() {
+		return propertyValue;
+	}
+	
 }
