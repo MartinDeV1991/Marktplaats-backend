@@ -28,7 +28,7 @@ public class CloudinaryService {
             Map uploadResult = cloudinary.uploader().upload(uploadedFile, uploadParams);
             uploadedFile.delete(); // Remove the file after upload
 
-            return uploadResult.get("url").toString();
+            return uploadResult.get("secure_url").toString();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

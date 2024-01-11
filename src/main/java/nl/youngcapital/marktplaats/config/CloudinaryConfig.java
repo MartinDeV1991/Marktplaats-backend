@@ -14,6 +14,8 @@ public class CloudinaryConfig {
 	
     @Bean
     public Cloudinary cloudinary() {
-        return new Cloudinary(cloudinaryUrl);
+    	Cloudinary cloudinaryS = new Cloudinary(cloudinaryUrl);
+    	cloudinaryS.config.secure = true;
+        return cloudinaryS;
     }
 }
